@@ -1,0 +1,146 @@
+﻿@using System.Web.UI.WebControls.WebParts
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    //Layout = null;
+
+}
+
+
+<link href="~/Content/jquery.jqGrid/ui.jqgrid.css" rel="stylesheet" type="text/css"/>
+@*<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/jquery-ui-1.12.1.js"></script>*@
+<script src="~/Scripts/jquery.jqGrid.min.js"></script>
+
+<script src="~/Scripts/i18n/grid.locale-ru.js"></script>
+
+
+
+<h2>Таблица</h2>
+<div id="gridContainer">
+    <table id="jqg"></table>
+    <div id="pager"></div>
+</div>
+
+<script>
+    $(function() {
+        $("#jqg").jqGrid
+        ({
+            url: "/Grid/GetData",
+            datatype: 'json',
+            mtype: 'Get',
+            //table header name
+            colNames: ['Клиент', 'Оператор', 'Время', 'Текст', 'Статус', 'Исполнитель', 'КомментарийИсп', ""],
+            colModel: [
+                {
+                    name: 'ClientName',
+                    editable: true,
+                    editrules: { required: true },
+                    index: 'ClientName',
+                    width: 100,
+                    stype: 'text',
+                    sortable: true,
+                    searchoptions: { sopt: ['eq', 'ne', 'cn'] }
+                },
+                { name: 'Operator', index: 'Operator', width: 50, stype: 'text', sortable: true, search: false },
+                {
+                    name: 'Time',
+                    index: 'Time',
+                    width: 100,
+                    sortable: true,
+                    formatter: 'date',
+                    search: false,
+                    formatoptions: {
+                        srcformat: "ISO8601Long",
+                        newformat: 'UniversalSortableDateTime'
+                    }
+                },
+                {
+                    name: 'Text',
+                    editable: true,
+                    editrules: { required: true },
+                    index: 'Text',
+                    width: 150,
+                    stype: 'text',
+                    search: false
+                },
+                {
+                    name: 'State',
+                    editable: true,
+                    index: 'State',
+                    width: 50,
+                    sortable: true,
+                    edittype: 'select',
+                    editoptions: { value: "1:One;2:Two" },
+                    searchoptions: { sopt: ['eq', 'ne', 'cn'] }
+                },
+                {
+                    name: 'Executor',
+                    index: 'Executor',
+                    width: 100,
+                    stype: 'text',
+                    sortable: false,
+                    searchoptions: { sopt: ['eq', 'ne', 'cn'] }
+                },
+                { name: 'SolutionComment', index: 'SolutionComment', width: 150, stype: 'text', search: false }
+                ],
+                height: 'auto',
+                rowList: [10, 20, 30, 40],
+                pager: "#pager",
+                loadonce: false,
+                sortname: 'Time',
+                sortorder: "desc",
+                viewrecords: true,
+                caption: "Запросы",
+                emptyrecords: 'No records',
+                jsonReader:
+                    {
+                        root: "rows",
+                        page: "page",
+                        total: "total",
+                        records: "records",
+                        repeatitems: false,
+                        Id: "0"
+                    },
+                autowidth: true
+            }).navGrid('#pager',
+            {
+                            edit: true,  
+                add: true, 
+                search: true,  
+                refresh: true,  
+                closeAfterSearch: true,
+                searchtext: "Поиск",
+                addtext: "Зарегистрировать запрос",
+                edittext: "Изменить статус"
+            },
+            {//edit section
+                
+            },
+            {//add section
+                zindex: 100,
+                recreateForm: true,
+                url: "/Grid/CreateRequest",  
+                closeOnEscape: true,  
+                closeAfterAdd: true,  
+                afterComplete: function (response) {
+                            if (response.responseJSON)
+                            {
+                                if (response.responseJSON == "ok") {
+                                    alert("Сохранено");
+                                }
+                                else {
+                                    var message = "Не удалось добавить \n";
+                                    for (var i = 0; i < response.responseJSON.length; i++) {
+                                        message += response.responseJSON[i];
+                                    }
+                                    alert(message);
+                                }
+                            }
+                        }  
+            });
+    });
+    $.jgrid.defaults.styleUI = 'Bootstrap';
+</script>
+

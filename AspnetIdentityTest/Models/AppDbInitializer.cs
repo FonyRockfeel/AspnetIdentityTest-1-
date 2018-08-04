@@ -35,17 +35,21 @@ namespace AspnetIdentityTest.Models
             {
                 userManager.AddToRole(admin.Id, roleAdmin.Name);
             }
-
-            var req = new SupportRequest(){OperatorName = "Oper2"};
-            var req1 = new SupportRequest() { OperatorName = "Oper3" };
-            var req2 = new SupportRequest() { OperatorName = "Oper3" };
-            var req3 = new SupportRequest() { OperatorName = "Oper3" };
-            context.SupportRequests.Add(req);
-            context.SupportRequests.Add(req1);
-            context.SupportRequests.Add(req2);
-            context.SupportRequests.Add(req3);
-
-
+            for (int i = 0; i < 60; i++)
+            {
+                context.SupportRequests.Add(new RequestModel()
+                {
+                    ClientName = "client" + i,
+                    Executor = "Exec" + i,
+                    Id = i,
+                    Operator = "Operator" + i,
+                    SolutionComment = "sdfs",
+                    State = "Зарегистриван",
+                    Text = "sdf",
+                    Time = DateTime.Now
+                });
+            }
+            //context.SaveChanges();
             base.Seed(context);
         }
     }

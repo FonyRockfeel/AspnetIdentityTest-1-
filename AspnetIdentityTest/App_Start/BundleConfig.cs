@@ -9,7 +9,9 @@ namespace AspnetIdentityTest
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                        "~/Scripts/jquery-{version}.js"));
+                        "~/Scripts/jquery-{version}.js",
+                "~/Scripts/jquery-ui-1.12.1.js"
+                ));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
@@ -24,7 +26,10 @@ namespace AspnetIdentityTest
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
-                      "~/Content/site.css"));
+                      "~/Content/site.css",
+                      "~/Content/themes/smoothness/jquery-ui-1.8.23.custom.css",
+                      "~/Content/themes/smoothness/jquery-ui.theme.css"
+                      ));
         }
     }
 }

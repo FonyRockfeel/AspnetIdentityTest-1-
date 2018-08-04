@@ -30,15 +30,8 @@ namespace AspnetIdentityTest.Models
         {
             return new ApplicationDbContext();
         }
-        public IDbSet<SupportRequest> SupportRequests { get; set; }
+        public IDbSet<RequestModel> SupportRequests { get; set; }
     }
-
-    public class SupportRequest
-    {
-        public Guid Id { get; set; }
-        public string OperatorName { get; set; }
-    }
-
     //public class RequestsContext : DbContext
     //{
     //    public RequestsContext(): base("DefaultConnection")
